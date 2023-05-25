@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="55.0" fitWidth="60.0" layoutX="270.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assest/user.png" />
+         </image>
+      </ImageView>
+      <AnchorPane prefHeight="55.0" prefWidth="600.0" style="-fx-background-color: blue;">
+         <children>
+            <Label layoutX="14.0" layoutY="10.0" prefHeight="21.0" prefWidth="154.0" text="Live Chat" textFill="#f2ebeb">
+               <font>
+                  <Font name="Rockwell Condensed" size="29.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXTextField fx:id="txtName" layoutX="90.0" layoutY="237.0" onKeyPressed="#KeyOnAction" prefHeight="31.0" prefWidth="458.0" promptText="Enter Your Name........." />
+      <JFXButton layoutX="247.0" layoutY="306.0" onAction="#LoggingOnAction" prefHeight="42.0" prefWidth="106.0" style="-fx-background-color: black;" text="Log In" textFill="#ebe8e8">
+         <font>
+            <Font name="Rockwell Bold" size="19.0" />
+         </font>
+      </JFXButton>
+   </children>
+</AnchorPane>
