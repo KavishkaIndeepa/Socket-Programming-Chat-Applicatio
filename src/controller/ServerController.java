@@ -7,25 +7,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 
-
-public class ClientController {
-    public Label lblClientName;
+public class ServerController {
+    public Label lblServerName;
     public JFXTextField txtType;
     public ScrollPane txtField;
 
-
-
-    public void initialize(){
-        lblClientName.setText(LoginFormController.name);
-    }
-
-    public void EmojiOnAction(MouseEvent mouseEvent) {
+    public void sendOnAction(ActionEvent actionEvent) {
     }
 
     public void CamOnAction(MouseEvent mouseEvent) {
     }
 
-    public void sendOnAction(ActionEvent actionEvent) {
+    public void EmojiOnAction(MouseEvent mouseEvent) {
     }
 }
-

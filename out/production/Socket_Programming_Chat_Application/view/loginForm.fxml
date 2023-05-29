@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
+<AnchorPane fx:id="loginContexts" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginFormController">
    <children>
       <ImageView fitHeight="55.0" fitWidth="60.0" layoutX="270.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -25,8 +24,8 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXTextField fx:id="txtName" layoutX="90.0" layoutY="237.0" onKeyPressed="#KeyOnAction" prefHeight="31.0" prefWidth="458.0" promptText="Enter Your Name........." />
-      <JFXButton layoutX="247.0" layoutY="306.0" onAction="#LoggingOnAction" prefHeight="42.0" prefWidth="106.0" style="-fx-background-color: black;" text="Log In" textFill="#ebe8e8">
+      <JFXTextField fx:id="txtName" layoutX="90.0" layoutY="237.0" onAction="#enterOnAction" prefHeight="31.0" prefWidth="458.0" promptText="Enter Your Name........." />
+      <JFXButton fx:id="btnLog" layoutX="247.0" layoutY="306.0" onAction="#LoggingOnAction" prefHeight="42.0" prefWidth="106.0" style="-fx-background-color: black;" text="Log In" textFill="#ebe8e8">
          <font>
             <Font name="Rockwell Bold" size="19.0" />
          </font>
