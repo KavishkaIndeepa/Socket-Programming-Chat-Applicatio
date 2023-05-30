@@ -7,9 +7,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="579.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ClientController">
+<AnchorPane fx:id="context" prefHeight="579.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ClientController">
    <children>
       <AnchorPane prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: blue;">
          <children>
@@ -27,11 +29,14 @@
       </AnchorPane>
       <JFXTextField fx:id="txtType" layoutX="116.0" layoutY="495.0" prefHeight="55.0" prefWidth="343.0" />
       <ScrollPane fx:id="txtField" layoutX="75.0" layoutY="127.0" prefHeight="355.0" prefWidth="477.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
-      <JFXButton layoutX="525.0" layoutY="508.0" onAction="#sendOnAction" text="Send" />
+         <content>
+            <VBox fx:id="vbox_messages" prefHeight="354.0" prefWidth="461.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" />
+               </children>
+            </VBox>
+         </content></ScrollPane>
+      <JFXButton fx:id="button_send" layoutX="525.0" layoutY="508.0" onAction="#sendOnAction" text="Send" />
       <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="50.0" layoutY="498.0" onMouseClicked="#EmojiOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../assest/emoji.jpeg" />
@@ -42,5 +47,6 @@
             <Image url="@../assest/cam.jpg" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="emojiPane" layoutX="4.0" layoutY="305.0" prefHeight="184.0" prefWidth="297.0" />
    </children>
 </AnchorPane>
