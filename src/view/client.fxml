@@ -30,7 +30,7 @@
       <JFXTextField fx:id="txtType" layoutX="116.0" layoutY="495.0" prefHeight="55.0" prefWidth="343.0" />
       <ScrollPane fx:id="txtField" layoutX="75.0" layoutY="127.0" prefHeight="355.0" prefWidth="477.0">
          <content>
-            <VBox fx:id="vbox_messages" prefHeight="354.0" prefWidth="461.0">
+            <VBox fx:id="vbox_messages" prefHeight="354.0" prefWidth="456.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>

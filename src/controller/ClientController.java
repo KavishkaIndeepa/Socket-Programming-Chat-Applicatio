@@ -1,16 +1,11 @@
 package controller;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -19,86 +14,52 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.Client;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.net.Socket;
 
 
-public class ClientController {
+public class ClientController extends Thread{
     public Label lblClientName;
     public JFXTextField txtType;
     public ScrollPane txtField;
     public AnchorPane context = new AnchorPane();
 
 
-//    final int PORT = 500;
+
     public AnchorPane emojiPane;
     public JFXButton button_send;
     public VBox vbox_messages;
 
 
-    private Client client;
+    BufferedReader reader;
+    PrintWriter writer;
+    Socket socket;
+
+    private FileChooser fileChooser;
+    private File filePath;
+
 
     public void initialize(){
-
+        String userName=LoginFormController.name;
         lblClientName.setText(LoginFormController.name);
 
 
-        try{
-            client = new Client(new Socket("localhost",500));
-            System.out.println("Connected to Server");
-        }catch (IOException e){}
+        try {
+            socket = new Socket("localhost", 5000);
+            System.out.println("Socket is connected with server!");
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            writer = new PrintWriter(socket.getOutputStream(), true);
 
-        vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                txtField.setVvalue((Double) newValue);
-            }
-        });
-
-//        client.recieveMessageFromServer(vbox_messages);
-
-        client.receiveMessageFromServer(vbox_messages);
-        button_send.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String messageToSend = txtType.getText();
-                if(!messageToSend.isEmpty()){
-                    HBox hBox= new HBox();
-                    hBox.setAlignment(Pos.CENTER_RIGHT);
-
-                    hBox.setPadding(new Insets(5,5,5,10));
-
-
-                    javafx.scene.text.Text text = new javafx.scene.text.Text(messageToSend);
-                    TextFlow textFlow = new TextFlow(text);
-
-
-                    textFlow.setStyle("-fx-color: rgb(239,242,255);" +
-                            "-fx-background-color: rgb(15,125,242);" +
-                            " -fx-background-radius: 20px");
-
-
-
-                    textFlow.setPadding(new Insets(5, 10, 5, 10));
-                    text.setFill(Color.color(0.934, 0.945, 0.996));
-
-                    hBox.getChildren().add(textFlow);
-                    vbox_messages.getChildren().add(hBox);
-
-                    client.sendMessageToServer(messageToSend);
-                    txtType.clear();
-                }
-            }
-        });
+            this.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void EmojiOnAction(MouseEvent mouseEvent) {
@@ -107,32 +68,140 @@ public class ClientController {
 
 
     public void CamOnAction(MouseEvent mouseEvent) {
-
+        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Image");
+        this.filePath = fileChooser.showOpenDialog(stage);
+        writer.println(lblClientName.getText() + " " + "img" + filePath.getPath());
     }
 
     public void sendOnAction(ActionEvent actionEvent) {
+        String msg = txtType.getText();
+        writer.println(lblClientName.getText() + ": " + msg);
+
+        txtType.clear();
+
+        if(msg.equalsIgnoreCase("BYE") || (msg.equalsIgnoreCase("logout"))) {
+            System.exit(0);
+
+        }
     }
 
-    public static  void addLabel(String msgFromServer, VBox vBox){
-        HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER_LEFT);
-        hBox.setPadding(new Insets(5,5,5,10));
+@Override
+    public void run() {
+        try {
+            while (true) {
 
-        javafx.scene.text.Text text = new Text(msgFromServer);
-        TextFlow textFlow = new TextFlow(text);
-        textFlow.setStyle("-fx-background-color: rgb(233,233,235);" +
-                " -fx-background-radius: 20px");
 
-        textFlow.setPadding(new Insets(5,10,5,10));
-        hBox.getChildren().add(textFlow);
+                String msg = reader.readLine();
+                String[] tokens = msg.split(" ");
+                String cmd = tokens[0];
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                vBox.getChildren().add(hBox);
 
+                StringBuilder fullMsg = new StringBuilder();
+                for (int i = 1; i < tokens.length; i++) {
+                    fullMsg.append(tokens[i]+" ");
+                }
+
+
+                String[] msgToAr = msg.split(" ");
+                String st = "";
+                for (int i = 0; i < msgToAr.length - 1; i++) {
+                    st += msgToAr[i + 1] + " ";
+                }
+
+
+                Text text = new Text(st);
+                String firstChars = "";
+                if (st.length() > 3) {
+                    firstChars = st.substring(0, 3);
+
+                }
+
+
+                if (firstChars.equalsIgnoreCase("img")) {
+                    //for the Images
+
+                    st = st.substring(3, st.length() - 1);
+
+
+                    File file = new File(st);
+                    Image image = new Image(file.toURI().toString());
+
+                    ImageView imageView = new ImageView(image);
+
+                    imageView.setFitHeight(150);
+                    imageView.setFitWidth(200);
+
+
+                    HBox hBox = new HBox(10);
+                    hBox.setAlignment(Pos.BOTTOM_RIGHT);
+
+
+                    if (!cmd.equalsIgnoreCase(lblClientName.getText())) {
+
+                        vbox_messages.setAlignment(Pos.TOP_LEFT);
+                        hBox.setAlignment(Pos.CENTER_LEFT);
+
+
+                        Text text1 = new Text("  " + cmd + " :");
+                        hBox.getChildren().add(text1);
+                        hBox.getChildren().add(imageView);
+
+                    } else {
+                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+                        hBox.getChildren().add(imageView);
+                        Text text1 = new Text(": Me ");
+                        hBox.getChildren().add(text1);
+
+                    }
+
+                    Platform.runLater(() -> vbox_messages.getChildren().addAll(hBox));
+
+
+                } else {
+
+                    TextFlow tempFlow = new TextFlow();
+
+                    if (!cmd.equalsIgnoreCase(lblClientName.getText() + ":")) {
+                        Text txtName = new Text(cmd + " ");
+                        txtName.getStyleClass().add("txtName");
+                        tempFlow.getChildren().add(txtName);
+                    }
+
+                    tempFlow.getChildren().add(text);
+                    tempFlow.setMaxWidth(200); //200
+
+                    TextFlow flow = new TextFlow(tempFlow);
+
+                    HBox hBox = new HBox(12); //12
+
+
+
+
+                    if (!cmd.equalsIgnoreCase(lblClientName.getText() + ":")) {
+
+
+                        vbox_messages.setAlignment(Pos.TOP_LEFT);
+                        hBox.setAlignment(Pos.CENTER_LEFT);
+                        hBox.getChildren().add(flow);
+
+                    } else {
+
+                        Text text2 = new Text(fullMsg + ": Me");
+                        TextFlow flow2 = new TextFlow(text2);
+                        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+                        hBox.getChildren().add(flow2);
+                    }
+
+                    Platform.runLater(() -> vbox_messages.getChildren().addAll(hBox));
+                }
             }
-        });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }
 
