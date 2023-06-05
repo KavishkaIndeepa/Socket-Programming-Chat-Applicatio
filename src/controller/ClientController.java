@@ -203,5 +203,8 @@ public class ClientController extends Thread{
         }
     }
 
+    public void enterOnAction(ActionEvent actionEvent) {
+        button_send.fire();
+    }
 }
 

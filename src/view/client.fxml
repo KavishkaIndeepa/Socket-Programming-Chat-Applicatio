@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="context" prefHeight="579.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ClientController">
+<AnchorPane fx:id="context" prefHeight="674.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to right, #000000, #434343);;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ClientController">
    <children>
-      <AnchorPane prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: blue;">
+      <AnchorPane prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: linear-gradient(to right, #000000, #434343);;">
          <children>
             <Label fx:id="lblClientName" layoutX="89.0" layoutY="22.0" prefHeight="35.0" prefWidth="135.0" text="Client Name" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -22,31 +23,37 @@
             </Label>
             <ImageView fitHeight="55.0" fitWidth="60.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../assest/user.png" />
+                  <Image url="@../assest/219988.png" />
                </image>
             </ImageView>
          </children>
       </AnchorPane>
-      <JFXTextField fx:id="txtType" layoutX="116.0" layoutY="495.0" prefHeight="55.0" prefWidth="343.0" />
-      <ScrollPane fx:id="txtField" layoutX="75.0" layoutY="127.0" prefHeight="355.0" prefWidth="477.0">
+      <JFXTextField fx:id="txtType" focusColor="#204bcd" layoutX="116.0" layoutY="565.0" onAction="#enterOnAction" prefHeight="55.0" prefWidth="343.0" promptText="Type a Massage..." unFocusColor="#f2efef">
+         <effect>
+            <ColorAdjust brightness="1.0" />
+         </effect></JFXTextField>
+      <ScrollPane fx:id="txtField" layoutX="75.0" layoutY="127.0" prefHeight="422.0" prefWidth="477.0">
          <content>
-            <VBox fx:id="vbox_messages" prefHeight="354.0" prefWidth="456.0">
+            <VBox fx:id="vbox_messages" prefHeight="421.0" prefWidth="456.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
             </VBox>
          </content></ScrollPane>
-      <JFXButton fx:id="button_send" layoutX="525.0" layoutY="508.0" onAction="#sendOnAction" text="Send" />
-      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="50.0" layoutY="498.0" onMouseClicked="#EmojiOnAction" pickOnBounds="true" preserveRatio="true">
+      <JFXButton fx:id="button_send" layoutX="525.0" layoutY="578.0" onAction="#sendOnAction" prefHeight="36.0" prefWidth="64.0" style="-fx-background-color: white;" text="Send" textAlignment="CENTER" textFill="#1e1d1d">
+         <font>
+            <Font name="Rockwell Extra Bold" size="15.0" />
+         </font></JFXButton>
+      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="44.0" layoutY="570.0" onMouseClicked="#EmojiOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assest/emoji.jpeg" />
+            <Image url="@../assest/download.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="467.0" layoutY="497.0" onMouseClicked="#CamOnAction" pickOnBounds="true" preserveRatio="true">
+      <ImageView blendMode="LIGHTEN" fitHeight="50.0" fitWidth="50.0" layoutX="467.0" layoutY="567.0" onMouseClicked="#CamOnAction" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../assest/cam.jpg" />
+            <Image url="@../assest/gallery.jpg" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="emojiPane" layoutX="4.0" layoutY="305.0" prefHeight="184.0" prefWidth="297.0" />
+      <AnchorPane fx:id="emojiPane" layoutX="4.0" layoutY="373.0" prefHeight="184.0" prefWidth="297.0" />
    </children>
 </AnchorPane>
